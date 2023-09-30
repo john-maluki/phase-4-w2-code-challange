@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+import random
+from models import Hero, HeroPower, Power, db
+from app import app
+
 print("🦸‍♀️ Seeding powers...")
 power_list = [
     {
@@ -35,6 +40,30 @@ hero_list = [
 print("🦸‍♀️ Adding powers to heroes...")
 
 strengths = ["Strong", "Weak", "Average"]
+
+with app.app_context():
+    heroes = []
+    for hero in hero_list:
+        heroe = Hero(name=hero["name"], super_name=hero["super_name"])
+        heroes.append(heroe)
+    db.session.add_all(heroes)
+
+    powers = []
+    for power in power_list:
+        pow = Power(name=power["name"], description=power["description"])
+        powers.append(pow)
+    db.session.add_all(powers)
+    strs = []
+    for strength in strengths:
+        st = HeroPower(
+            strength=strength,
+            hero_id=random.randint(1, len(heroes)),
+            power_id=random.randint(1, len(powers)),
+        )
+        strs.append(st)
+    db.session.add_all(strs)
+
+    db.session.commit()
 
 
 print("🦸‍♀️ Done seeding!")
