@@ -63,5 +63,23 @@ class HeroByIdResource(Resource):
             return hero
 
 
+@ns.route("/powers")
+class PowerResource(Resource):
+    @ns.marshal_list_with(power_model)
+    def get(self):
+        return Power.query.all()
+
+
+@ns.route("/powers/<int:id>")
+class PowerByIdResource(Resource):
+    @ns.marshal_with(power_model)
+    def get(self, id):
+        power = Power.query.filter_by(id=id).first()
+        if not power:
+            raise ObjectNotFoundException("Power not found")
+        else:
+            return power
+
+
 if __name__ == "__main__":
     app.run(port=5555)
