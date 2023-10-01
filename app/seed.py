@@ -42,6 +42,9 @@ print("🦸‍♀️ Adding powers to heroes...")
 strengths = ["Strong", "Weak", "Average"]
 
 with app.app_context():
+    Hero.query.delete()
+    Power.query.delete()
+    HeroPower.query.delete()
     heroes = []
     for hero in hero_list:
         heroe = Hero(name=hero["name"], super_name=hero["super_name"])
