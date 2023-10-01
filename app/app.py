@@ -23,6 +23,8 @@ power_model = api.model(
     "Power", {"id": fields.Integer, "name": fields.String, "description": fields.String}
 )
 
+power_input_model = api.model("Power", {"description": fields.String})
+
 hero_model = api.model(
     "Hero",
     {"id": fields.Integer, "name": fields.String, "super_name": fields.String},
@@ -104,6 +106,22 @@ class PowerByIdResource(Resource):
             raise ObjectNotFoundException("Power not found")
         else:
             return power
+
+    @ns.expect(power_input_model)
+    @ns.marshal_with(power_model)
+    def patch(self, id):
+        power = Power.query.filter_by(id=id).first()
+        if not power:
+            raise ObjectNotFoundException("Power not found")
+        else:
+            try:
+                for attr in ns.payload:
+                    setattr(power, attr, ns.payload[attr])
+                db.session.add(power)
+                db.session.commit()
+                return power
+            except ValueError as e:
+                raise e
 
 
 @ns.route("/hero_powers")
