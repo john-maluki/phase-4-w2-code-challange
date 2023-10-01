@@ -38,11 +38,36 @@ single_hero_model = api.model(
     },
 )
 
+hero_power_model = api.model(
+    "HeroPower",
+    {
+        "id": fields.Integer,
+        "strength": fields.String,
+        "power_id": fields.Integer,
+        "hero_id": fields.Integer,
+    },
+)
+
+hero_power_input_model = api.model(
+    "HeroPower",
+    {
+        "strength": fields.String,
+        "power_id": fields.Integer,
+        "hero_id": fields.Integer,
+    },
+)
+
 
 @api.errorhandler(ObjectNotFoundException)
 def handle_no_result_exception(error):
     """Return a custom not found error message and 404 status code"""
     return {"error": error.message}, 404
+
+
+@api.errorhandler(ValueError)
+def handle_no_result_exception(error):
+    """Return a custom not found error message and 404 status code"""
+    return {"errors": error.args}, 400
 
 
 @ns.route("/heroes")
@@ -79,6 +104,29 @@ class PowerByIdResource(Resource):
             raise ObjectNotFoundException("Power not found")
         else:
             return power
+
+
+@ns.route("/hero_powers")
+class HeroPowerResource(Resource):
+    @ns.marshal_list_with(hero_power_model)
+    def get(self):
+        return HeroPower.query.all()
+
+    @ns.expect(hero_power_input_model)
+    @ns.marshal_with(single_hero_model)
+    def post(self):
+        try:
+            hero_power = HeroPower(
+                strength=ns.payload["strength"],
+                power_id=ns.payload["power_id"],
+                hero_id=ns.payload["hero_id"],
+            )
+            db.session.add(hero_power)
+            db.session.commit()
+            hero = Hero.query.filter_by(id=ns.payload["hero_id"]).first()
+            return hero, 201
+        except ValueError as e:
+            raise e
 
 
 if __name__ == "__main__":
