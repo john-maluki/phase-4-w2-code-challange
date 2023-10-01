@@ -7,8 +7,9 @@ name = "pip_conf_index_global"
 flask = "*"
 flask-sqlalchemy = "*"
 flask-migrate = "*"
-flask-restx = "*"
 pytest = "*"
+gunicorn = "*"
+flask-restx = "*"
 
 [dev-packages]
 

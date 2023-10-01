@@ -256,3 +256,46 @@ JSON data, along with the appropriate HTTP status code:
   "errors": ["validation errors"]
 }
 ```
+
+## Technologies Used
+
+The following have been used on this project:
+
+- [Python3](https://docs.python.org/3.10/)
+- [Flask](https://flask.palletsprojects.com/en/2.3.x/)
+- [Pytest](https://docs.pytest.org/en/latest/contents.html)
+- [Flask SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/quickstart/)
+- [Flask Migrate](https://flask-migrate.readthedocs.io/en/latest/)
+- [Flask Restx](https://readthedocs.org/projects/flask-restx/)
+- [React](https://react.dev/)
+
+## Database
+
+This project uses SQLit3:
+
+[SQLite](https://www.sqlite.org/docs.html) - Acording to [SimpleLearn](https://www.simplilearn.com/tutorials/sql-tutorial/what-is-sqlite) SQLite is one of the most popular and easy-to-use relational database systems. It possesses many features over other relational databases. Many big MNCs such as Adobe, use SQLite as the application file format for their Photoshop Lightroom product. Airbus, a European multinational aerospace corporation, uses SQLite in the flight software for the A350 XWB family of aircraft. You will learn various concepts and get hands-on practice in this SQLite tutorial.
+
+## Project Setup (SERVER)
+
+- Clone the repository: `git clone <repository-url>`
+- Navigate to cloned repository: `cd phase-4-w2-code-challange`
+- Create pipenv environment and Install dependencies: `pipenv install`
+- Activate environment: ` pipenv shell`
+- Then run this commands ON `/app`: `export FLASK_APP=run.py && export FLASK_RUN_PORT=5555`
+- Create db with flask migrate on `/app`: `flask db updgrade head`
+- Populate db with seed file: `python3 seed.py`
+- Then, start flask applcation: `python run.py` or `flask run` or `gunicorn app:app`
+
+## Project Setup (CLIENT)
+
+- On root direct change directory to `client`: `cd client`
+- Install required packages: `npm install`
+- Run react app: `npm start`
+
+## Authors
+
+- [John Maluki](https://github.com/john-maluki)
+
+## Copyright
+
+Released under the MIT License. See the [LICENSE](https://github.com/john-maluki/phase-4-w2-code-challange/blob/main/LICENSE) file.
